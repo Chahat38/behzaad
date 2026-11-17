@@ -109,7 +109,7 @@ AdminPages.leads = {
   },
 
   async load() {
-    const root = document.getElementById("admin-leads-root");
+    const root = document.getElementById("admin-leads-list");
     root.innerHTML = `<div class="admin-spinner"></div>`;
     try {
       const res = await Admin.leads.list({
@@ -136,7 +136,7 @@ AdminPages.leads = {
   },
 
   async renderView() {
-    const root = document.getElementById("admin-leads-root");
+    const root = document.getElementById("admin-leads-list");
     if (this.state.view === "kanban") {
       root.innerHTML = `<div class="admin-kb" id="admin-kb"></div>`;
       this.renderKanban();
@@ -251,7 +251,7 @@ AdminPages.leads = {
   },
 
   renderPager(res) {
-    const root = document.getElementById("admin-leads-root");
+    const root = document.getElementById("admin-leads-list");
     const old = document.getElementById("admin-pager");
     if (old) old.remove();
     const pages = Math.max(1, Math.ceil(res.total / res.pageSize));
