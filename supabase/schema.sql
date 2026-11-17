@@ -1,4 +1,4 @@
--- Behzaad Qureshi — CRM schema (Supabase / PostgreSQL)
+-- Behzaad Qureshi - CRM schema (Supabase / PostgreSQL)
 -- Run in: Supabase Dashboard -> SQL Editor -> paste -> Run
 
 create extension if not exists "pgcrypto";
@@ -80,7 +80,7 @@ create index idx_leads_email on public.leads (email);
 -- ------------------------------------------------------------------
 alter table public.leads enable row level security;
 alter table public.notes enable row level security;
-alter table public/tags enable row level security;
+alter table public.tags enable row level security;
 alter table public.lead_tags enable row level security;
 alter table public.activity_log enable row level security;
 alter table public.profiles enable row level security;
