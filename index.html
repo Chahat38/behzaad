@@ -127,6 +127,14 @@ footer{padding:30px 6vw;background:var(--ink);color:#B7C98A;display:flex;justify
 .gal .t{grid-row:span 2}.gal .w{grid-column:span 2}
 #hov{position:fixed;left:0;top:0;width:280px;height:190px;object-fit:cover;pointer-events:none;opacity:0;z-index:70;box-shadow:0 20px 40px -15px rgba(33,45,26,.5);transform:rotate(-3deg)}
 @media(max-width:800px){.band{height:52vh}.gal{grid-template-columns:repeat(2,1fr);grid-auto-rows:20vh}.gal .w{grid-column:span 2}#hov{display:none}}
+    /* public contact form */
+    #contact .pub-form{margin:6vh auto 0;max-width:620px;display:grid;gap:14px;position:relative;z-index:2}
+    #contact .pub-form input,#contact .pub-form textarea,#contact .pub-form select{width:100%;padding:14px 16px;border:1px solid var(--ink);border-radius:14px;font-family:Inter,system-ui,sans-serif;font-size:15px;background:#fff;color:var(--ink);outline:none}
+    #contact .pub-form textarea{min-height:110px;resize:vertical}
+    #contact .pub-form .btn{justify-self:start;width:100%}
+    #contact .pub-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+    #contact .pub-ok,#contact #talk-thanks{margin-top:6vh;max-width:620px;position:relative;z-index:2}
+    #contact .pub-ok p,#contact #talk-thanks p{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2rem);line-height:1.3;margin:0}
 </style></head><body>
 <div id="bar"></div>
 <div id="loader"><h2><span class="l"><span>Kohat →</span></span><span class="l"><span>Islamabad →</span></span><span class="l"><span>Olsztyn → <em>Mars</em></span></span></h2><div id="cnt">0</div></div>
@@ -198,10 +206,21 @@ footer{padding:30px 6vw;background:var(--ink);color:#B7C98A;display:flex;justify
 <div class="band ph" data-k="earth"><span class="bt">Kohat → Islamabad → Olsztyn → Mars.</span></div>
 
 <section id="contact" data-n="09"><span class="cap">09 — Languages: Pushto (mother tongue) · Urdu C2 · English C1–C2</span><h2 id="talk">Let’s <em>talk.</em></h2>
+<form id="talk-form" class="pub-form" novalidate>
+  <input name="name" placeholder="Your name" required />
+  <input name="phone" type="tel" placeholder="Phone (optional)" />
+  <input name="email" type="email" placeholder="Email" required />
+  <select name="source"><option value="contact">General enquiry</option><option value="speaking">Speaking / workshop</option><option value="collaboration">Collaboration</option><option value="media">Media</option><option value="other">Other</option></select>
+  <textarea name="message" placeholder="Tell me briefly what you'd like to explore…" required></textarea>
+  <p id="talk-err" style="color:#B3452E;font-size:13px;min-height:16px;margin:0;"></p>
+  <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <button class="btn fill" type="submit">Send message</button>
+</form>
 <a class="m" href="mailto:behzadqureshiscience@gmail.com">behzadqureshiscience@gmail.com</a>
 <a class="m" style="font-size:1.1rem" href="https://meetbehzad.wordpress.com/" target="_blank" rel="noopener">meetbehzad.wordpress.com ↗</a></section>
 <footer><span class="note">See you on Mars.</span><a href="#hero" id="top">Back to top ↑</a></footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
@@ -277,4 +296,27 @@ function init(){
 $('#top').addEventListener('click',e=>{e.preventDefault();lenis?lenis.scrollTo(0,{duration:2}):scrollTo({top:0,behavior:'smooth'})});
 $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=$(a.getAttribute('href'));if(t&&lenis&&a.id!=='top'){e.preventDefault();lenis.scrollTo(t,{duration:1.6})}}));
 addEventListener('load',()=>ScrollTrigger.refresh());let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if((innerWidth>800)!==desk)location.reload();else ScrollTrigger.refresh()},300)});
+// ---- public contact -> Supabase leads ----
+const SUPA_URL = window.SUPABASE_URL || 'https://YOUR_PROJECT_REF.supabase.co';
+const SUPA_KEY = window.SUPABASE_ANON_KEY || '';
+const supabase = SUPA_KEY ? (window.Supabase ? window.Supabase.createClient(SUPA_URL, SUPA_KEY, { auth: { persistSession: false } }) : null) : null;
+const talkForm = document.getElementById('talk-form');
+if (talkForm) talkForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const hp = talkForm.querySelector('input[name="website"]');
+  if (hp && hp.value) return;
+  const data = Object.fromEntries(new FormData(talkForm).entries());
+  const name = String(data.name || '').trim();
+  const email = String(data.email || '').trim();
+  const message = String(data.message || '').trim();
+  const errEl = document.getElementById('talk-err');
+  errEl.textContent = '';
+  if (!name || !email || !message) { errEl.textContent = 'Please fill in name, email and message.'; return; }
+  if (supabase) {
+    const { error } = await supabase.from('leads').insert({ name: name, phone: data.phone || null, email: email, message: message, source: data.source || 'contact' });
+    if (error) { errEl.textContent = 'Something went wrong — please try again.'; return; }
+  }
+  talkForm.style.display = 'none';
+  talkForm.insertAdjacentHTML('beforebegin', '<div id="talk-thanks"><p>Thank you — your message is in orbit. We’ll reply to <strong>' + email + '</strong> soon.</p></div>');
+});
 </script></body></html>
