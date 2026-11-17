@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Mission Control — Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500&family=Caveat:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/admin/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-shell">
+      <aside class="admin-sidebar" id="admin-sidebar">
+        <div class="admin-logo">Behzad Qureshi<small>Mission Control</small></div>
+        <nav class="admin-nav">
+          <a href="/admin/" data-nav="dashboard">Dashboard</a>
+          <a href="/admin/leads.html" data-nav="leads">Leads <span class="count" id="nav-count-leads">0</span></a>
+          <a href="/admin/settings.html" data-nav="settings">Settings</a>
+        </nav>
+        <div class="foot">Supabase CRM · Behzaad Qureshi</div>
+      </aside>
+      <div class="admin-scrim" id="admin-scrim" onclick="window.Admin.shell?.closeSidebar()"></div>
+      <div class="admin-main">
+        <header class="admin-topbar">
+          <button class="admin-btn sm admin-burger" id="admin-burger" aria-label="Open menu">☰</button>
+          <h1 id="admin-topbar-title">Settings</h1>
+          <div class="spacer"></div>
+          <span id="admin-topbar-user" class="admin-muted" style="font-size: 12px;"></span>
+          <button class="admin-btn sm" id="admin-logout">Logout</button>
+        </header>
+        <main class="admin-content">
+          <div id="admin-settings-root">
+            <div class="admin-spinner"></div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+    <script src="/admin/js/admin.js"></script>
+    <script src="/admin/js/pages/settings.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        AdminPages.settings.init();
+      });
+    </script>
+  </body>
+</html>
