@@ -58,7 +58,25 @@ AdminPages.dashboard = {
   html(stats) {
     const statusItems = Object.keys(stats.byStatus).map((k) => ({ label: Admin.STATUS_LABELS[k] || k, value: stats.byStatus[k] }));
     const sourceItems = Object.keys(stats.bySource).map((k) => ({ label: k, value: stats.bySource[k] }));
+    const chart = (items, title) =>
+      `<div class="admin-card"><h3>${title}</h3><div>${
+        items.length
+          ? Admin.barChartSvg(items)
+          : '<div class="admin-muted" style="font-size:13px;padding:24px 0">No data yet — it fills in as leads arrive.</div>'
+      }</div></div>`;
     return `
+      <div class="admin-card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+        <div>
+          <h3 style="margin:0 0 2px;">Site content</h3>
+          <div class="admin-muted" style="font-size:13px;">Change the words and photos on the public site yourself — no code.</div>
+        </div>
+        <a class="admin-btn primary" href="/admin/content.html">Edit site content</a>
+      </div>
+      ${
+        stats.total === 0
+          ? `<div class="admin-card" style="margin-bottom:20px;"><h3 style="margin:0 0 4px;">No leads yet</h3><div class="admin-muted" style="font-size:13px;">This dashboard stays empty until someone uses the contact form on the site. Send a test message from <a href="/" target="_blank" rel="noopener">the contact section</a> and the lead will appear here.</div></div>`
+          : ""
+      }
       <div class="admin-grid cols-4">
         <div class="admin-card stat-card"><div class="label">Total leads</div><div class="value">${stats.total}</div><div class="sub">All time</div></div>
         <div class="admin-card stat-card"><div class="label">New today</div><div class="value">${stats.today}</div><div class="sub">Joined in last 24h</div></div>
@@ -67,8 +85,8 @@ AdminPages.dashboard = {
         <div class="admin-card stat-card"><div class="label">Conversion rate</div><div class="value">${stats.conversionRate}%</div><div class="sub">Converted / total</div></div>
       </div>
       <div class="admin-grid cols-2" style="margin-top:20px;">
-        <div class="admin-card"><h3>Leads by status</h3><div>${Admin.barChartSvg(statusItems)}</div></div>
-        <div class="admin-card"><h3>Leads by source</h3><div>${Admin.barChartSvg(sourceItems)}</div></div>
+        ${chart(statusItems, "Leads by status")}
+        ${chart(sourceItems, "Leads by source")}
       </div>
       <div class="admin-card" style="margin-top:20px;">
         <h3>Last 10 leads</h3>
@@ -85,7 +103,12 @@ AdminPages.dashboard = {
     const tbody = document.getElementById("admin-last10-body");
     if (!tbody) return;
     tbody.innerHTML = "";
-    for (const l of leads.slice(0, 10)) {
+    const rows = leads.slice(0, 10);
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="4" class="admin-muted" style="padding:18px 0;">No leads yet. Enquiries from the site's contact form appear here.</td></tr>`;
+      return;
+    }
+    for (const l of rows) {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><strong>${Admin.esc(l.name || "—")}</strong><div style="font-size:12px;color:var(--ink-faint)">${Admin.esc(l.email || "")}</div></td>

@@ -24,7 +24,7 @@ Just open `index.html` in a browser (file:// works for the public side). Admin p
 ## Setup
 
 1. **Create a Supabase project** (free tier): https://supabase.com/dashboard — New project.
-2. **Run the schema**: open the project → SQL Editor → paste `supabase/schema.sql` → Run.
+2. **Run the schema**: open the project → SQL Editor → paste `supabase/schema.sql` → Run. (Already ran it earlier? Run `supabase/content.sql` instead — it adds the editable-content table and the photo bucket used by `/admin/content.html`.)
 3. **Create the first admin user**: Supabase Dashboard → Authentication → Users → add the admin email (`behzadqureshiscience@gmail.com`) with a password. (Optionally add staff via `public.profiles`.)
 4. **Configure env values** (client-side public values — anon key is safe to expose, RLS protects data):
    - Copy `.env.example` → `.env` (local) and set:
@@ -56,6 +56,7 @@ Just open `index.html` in a browser (file:// works for the public side). Admin p
 - Leads CRM (`/admin/leads.html`): search, filters (status/source/assignee/date range), sorting, pagination, table + Kanban (drag & drop), add lead, CSV export, bulk status/delete, lead detail.
 - Lead detail: info, edit, delete, status change, tags, notes, activity, follow-up badges, quick actions (call / WhatsApp / email).
 - Settings: status labels, tags, team list.
+- Content (`/admin/content.html`): edit the headline, about text, stats, experience cards, research chapters, education, publications, conferences, contact details and every photo of the public site. Type the new text, upload a photo (or paste an image URL), press Save — empty field means the site's original default stays.
 
 ## Security notes
 
