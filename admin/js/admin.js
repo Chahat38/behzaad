@@ -178,6 +178,8 @@ window.Admin.closeModal = closeModal;
 window.Admin.toast = toast;
 window.Admin.confirmDialog = confirmDialog;
 window.Admin.exportCSV = exportCSV;
+window.Admin.barChartSvg = barChartSvg;
+window.Admin.donutSvg = donutSvg;
 window.Admin.SUPABASE_URL = window.SUPABASE_URL;
 window.Admin.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
 
