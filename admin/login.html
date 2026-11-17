@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Mission Control — Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500&family=Caveat:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/admin/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-auth-wrap">
+      <div class="admin-auth-card admin-card">
+        <h1>Mission Control</h1>
+        <p class="sub">Crew sign-in — authorized personnel only.</p>
+        <form id="admin-login-form" onsubmit="return false;">
+          <label class="admin-label" for="admin-email">Email</label>
+          <input id="admin-email" class="admin-input" type="email" required autocomplete="email" placeholder="you@earth.org" />
+          <label class="admin-label" for="admin-password">Password</label>
+          <input id="admin-password" class="admin-input" type="password" required autocomplete="current-password" placeholder="••••••••" />
+          <p id="admin-login-error" class="admin-muted" style="color: var(--danger); min-height: 18px;"></p>
+          <button class="admin-btn primary" type="submit" style="width: 100%; justify-content: center; margin-top: 8px;">Sign in</button>
+        </form>
+        <div class="admin-row" style="justify-content: space-between; margin-top: 16px;">
+          <a id="admin-forgot" href="#" class="admin-muted" style="font-size: 13px;">Forgot password?</a>
+          <a href="/" style="font-size: 13px;">← Back to site</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+    <script src="/admin/js/admin.js"></script>
+    <script src="/admin/js/pages/login.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        AdminPages.login.init();
+      });
+    </script>
+  </body>
+</html>
