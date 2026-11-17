@@ -21,12 +21,11 @@ window.SUPABASE_URL = window.SUPABASE_URL || "https://YOUR_PROJECT_REF.supabase.
 window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "";
 
 function adminClient() {
-  if (!window.Admin.client) {
-    window.Admin.client = window.Supabase
-      ? window.Supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY, {
-          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-        })
-      : null;
+  const Sb = window.Supabase || window.supabase;
+  if (!window.Admin.client && Sb) {
+    window.Admin.client = Sb.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+    });
   }
   return window.Admin.client;
 }
@@ -186,21 +185,25 @@ window.Admin.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
 window.Admin.auth = {
   async getSession() {
     const c = adminClient();
+    if (!c) return null;
     const { data, error } = await c.auth.getSession();
     if (error) return null;
     return data.session;
   },
   async signIn(email, password) {
     const c = adminClient();
+    if (!c) return { session: null, error: { message: "Storage unavailable" } };
     const { data, error } = await c.auth.signInWithPassword({ email, password });
     return { session: data.session, error };
   },
   async signOut() {
     const c = adminClient();
+    if (!c) return;
     await c.auth.signOut();
   },
   async resetPassword(email) {
     const c = adminClient();
+    if (!c) return { error: { message: "Storage unavailable" } };
     const { error } = await c.auth.resetPasswordForEmail(email, { redirectTo: location.origin + "/admin/login.html" });
     return { error };
   },
