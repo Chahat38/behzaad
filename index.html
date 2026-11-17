@@ -301,7 +301,7 @@ window.SUPABASE_URL = window.SUPABASE_URL || 'https://pwjxwegkipitvbmcllzi.supab
 window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_sidyLozgB8ho7S4vAGvEZQ_c0wOwOPH';
 const SUPA_URL = window.SUPABASE_URL;
 const SUPA_KEY = window.SUPABASE_ANON_KEY;
-const supabase = SUPA_KEY ? (((window.Supabase || window.supabase) ? (window.Supabase || window.supabase).createClient(SUPA_URL, SUPA_KEY, { auth: { persistSession: false } }) : null)) : null;
+const sbClient = SUPA_KEY ? (((window.Supabase || window.supabase) ? (window.Supabase || window.supabase).createClient(SUPA_URL, SUPA_KEY, { auth: { persistSession: false } }) : null)) : null;
 const talkForm = document.getElementById('talk-form');
 if (talkForm) talkForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -314,8 +314,8 @@ if (talkForm) talkForm.addEventListener('submit', async (e) => {
   const errEl = document.getElementById('talk-err');
   errEl.textContent = '';
   if (!name || !email || !message) { errEl.textContent = 'Please fill in name, email and message.'; return; }
-  if (supabase) {
-    const { error } = await supabase.from('leads').insert({ name: name, phone: data.phone || null, email: email, message: message, source: data.source || 'contact' });
+  if (sbClient) {
+    const { error } = await sbClient.from('leads').insert({ name: name, phone: data.phone || null, email: email, message: message, source: data.source || 'contact' });
     if (error) { errEl.textContent = 'Something went wrong — please try again.'; return; }
   }
   talkForm.style.display = 'none';
