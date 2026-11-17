@@ -297,8 +297,8 @@ $('#top').addEventListener('click',e=>{e.preventDefault();lenis?lenis.scrollTo(0
 $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=$(a.getAttribute('href'));if(t&&lenis&&a.id!=='top'){e.preventDefault();lenis.scrollTo(t,{duration:1.6})}}));
 addEventListener('load',()=>ScrollTrigger.refresh());let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if((innerWidth>800)!==desk)location.reload();else ScrollTrigger.refresh()},300)});
 // ---- public contact -> Supabase leads ----
-window.SUPABASE_URL = window.SUPABASE_URL || 'https://YOUR_PROJECT_REF.supabase.co';
-window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || '';
+window.SUPABASE_URL = window.SUPABASE_URL || 'https://pwjxwegkipitvbmcllzi.supabase.co';
+window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_sidyLozgB8ho7S4vAGvEZQ_c0wOwOPH';
 const SUPA_URL = window.SUPABASE_URL;
 const SUPA_KEY = window.SUPABASE_ANON_KEY;
 const supabase = SUPA_KEY ? (((window.Supabase || window.supabase) ? (window.Supabase || window.supabase).createClient(SUPA_URL, SUPA_KEY, { auth: { persistSession: false } }) : null)) : null;

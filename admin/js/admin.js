@@ -17,8 +17,8 @@ const STATUS_LABELS = {
   lost: "Lost",
 };
 
-window.SUPABASE_URL = window.SUPABASE_URL || "https://YOUR_PROJECT_REF.supabase.co";
-window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "";
+window.SUPABASE_URL = window.SUPABASE_URL || "https://pwjxwegkipitvbmcllzi.supabase.co";
+window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "sb_publishable_sidyLozgB8ho7S4vAGvEZQ_c0wOwOPH";
 
 function adminClient() {
   const Sb = window.Supabase || window.supabase;
